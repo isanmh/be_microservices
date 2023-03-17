@@ -1,0 +1,131 @@
+setting Node js :
+- image docker : node:14.17.0-alpine3.13, PosgresSQL, MariaDb(MySQL)
+- npm i 
+- setting .env
+- aktifkan database (mysql/PosgresSQL)
+- create database web_api di mysql/PosgresSQL file .env
+- lakukan migrate :
+npm run sequelize-cli -- db:migrate
+
+jalankan server : 
+  - npm start (production)
+  - node app.js
+  - npm run dev
+
+local docker :
+buka browser : http://localhost:5000
+
+
+environment Node Js :
+- node js, Vscode, DBMS(Laragon), Postman
+
+setting Laragon :
+- donwload Laragon :
+https://laragon.org/download/index.html
+- install Laragon 
+- donwload binnaries PosgresSQL :
+https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+
+stting extension laragon :
+- setting Laragon port 
+    - menu advanced > port > change port 5432 to 5433
+- pdo_pgsql
+- pgsql
+
+setting DBMS PosgresSQL :
+Database > create database > name : web_api
+
+setting Vscode extension :
+- Prettier - Code formatter
+- Auto close tag
+- Auto rename tag
+- Auto complete tag
+- Bootrap 5 Quick Snippets
+- Color Highlight
+- CSS Peek
+- DotENV
+- Ejs Beautify
+- EJS Language Support
+- Ejs Snippets
+- EJS Snippets And Color Highlighting
+- ES7+ React/Redux/React-Native snippets
+- ESLint
+- IntelliSense for CSS class names in HTML
+- Path Intellisense
+- Thunder Client (API Testing Tool)
+- vscode-icons
+
+setting Prettier :
+- ctrl + , (setting)
+- search "formatter"
+
+cara install express :
+npm init 
+npm i express
+yarn add express
+
+cara jalankan express node js :
+node app.js
+npm start
+nodemon app
+npm run dev
+
+cara install nodemon secara global:
+nodemon adalah tools untuk mempermudah developer dalam melakukan restart server ketika ada perubahan pada file yang di edit
+npm i -g nodemon
+
+mogan adalah tools untuk menampilkan log request yang masuk ke server
+npm i morgan
+npm i dotenv
+
+cata install tamplate engine ejs :
+npm i ejs
+cara install express-ejs-layouts :
+npm i express-ejs-layouts
+
+depedency untuk pembuatan api :
+npm i body-parser cors compression
+
+cara koneksi database menggunakan sequelize :
+npm i sequelize pg pg-hstore mysql2 sequelize-cli
+
+cara install sequelize-cli (migrations) :
+npm i sequelize-cli 
+
+
+cara setting local :
+buat file .sequelizerc
+// .sequelizerc
+const path = require("path");
+module.exports = {
+  config: path.resolve("config", "database.js"),
+  "models-path": path.resolve("database", "models"),
+  "seeders-path": path.resolve("database", "seeders"),
+  "migrations-path": path.resolve("database", "migrations"),
+};
+
+setting script package.json :
+
+cara setting sequelize-cli :
+npx sequelize-cli init (luar) X tidak bisa
+
+npm run sequelize-cli init (local)
+
+cara menggunakan migrations sequelize-cli :
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string (global)
+
+npm run sequelize-cli -- model:generate --name Contact --attributes name:string,email:string,phone:string,image:string --underscored
+
+GLOBAL:
+npx sequelize-cli db:migrate
+
+local :
+npm run sequelize-cli -- db:migrate
+npm run sequelize-cli -- db:migrate:undo
+npm run sequelize-cli -- db:migrate:undo:all
+
+validasi dan upload image :
+npm i express-validator multer
+
+form data untuk node js :
+npm i method-override cookie-parser express-session

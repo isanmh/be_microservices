@@ -1,0 +1,13 @@
+<h1>Halaman About</h1>
+<!-- if ejs -->
+<% if (data.length < 1) { %>
+<p>Belum Ada Data pegawai</p>
+<% } else { %>
+<!--looping pegawai  -->
+<% data.forEach(i => { %>
+<ul>
+  <li>Nama: <%= i.nama %></li>
+  <li>Job <%= i.job %></li>
+  <li>Phone <%= i.phone %></li>
+</ul>
+<% }) %> <% } %>
