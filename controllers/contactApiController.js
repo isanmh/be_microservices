@@ -16,9 +16,8 @@ module.exports = {
     // console.log(req.file);
     const errors = validationResult(req);
     const { name, email, phone } = req.body;
-    const img = req.file;
     // logika jika ada file
-    if (img) {
+    if (req.file) {
       var image = req.file.filename;
     } else {
       var image = null;
