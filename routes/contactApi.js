@@ -8,14 +8,14 @@ const router = express.Router();
 router.get("/", contactApiController.index);
 router.post(
   "/",
-  upload.single("image"),
   contactValidator,
+  // upload.single("image"),
   contactApiController.store
 );
 router.get("/:id", contactApiController.show);
 router.put(
   "/:id",
-  upload.single("image"),
+  // upload.single("image"),
   contactEditValidator,
   contactApiController.update
 );

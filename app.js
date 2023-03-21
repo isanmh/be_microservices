@@ -6,9 +6,7 @@ const expressLayouts = require("express-ejs-layouts"); // untuk template engine
 const cors = require("cors"); // untuk mengatasi cors
 const compression = require("compression"); // compression terhadap respon
 const bodyParser = require("body-parser"); // untuk parsing body request
-const methodOverride = require("method-override");
-const session = require("express-session");
-const cookieParser = require("cookie-parser");
+const FileUpload = require("express-fileupload"); // untuk upload file
 const path = require("path");
 
 const app = express();
@@ -19,20 +17,11 @@ const port = process.env.PORT || 3004;
 app.use(morgan("dev"));
 
 // kebutuhan api
+app.use(FileUpload());
 app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride("_method"));
-app.use(
-  session({
-    secret: "secret",
-    resave: true,
-    saveUninitialized: true,
-    cookie: { maxAge: 60000 },
-  })
-);
-app.use(cookieParser("secret"));
 
 // setting template engine
 app.set("views", path.join(__dirname, "views"));

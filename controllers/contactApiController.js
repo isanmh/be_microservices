@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const db = require("../database/models");
+const path = require("path");
 const fs = require("fs");
 
 module.exports = {
@@ -16,16 +17,33 @@ module.exports = {
     // console.log(req.file);
     const errors = validationResult(req);
     const { name, email, phone } = req.body;
-    // logika jika ada file
-    if (req.file) {
-      var image = req.file.filename;
-    } else {
-      var image = null;
-    }
     // logika jika error
     if (!errors.isEmpty()) {
       return res.status(422).send({ status: "error", errors: errors.array() });
     } else {
+      // upload file
+      if (req.files === null) {
+        // return res.status(400).json({ msg: "No File Uploaded" });
+        var image = null;
+      } else {
+        // console.log(req.files);
+        const file = req.files.image;
+        const fileSize = file.size;
+        const ext = path.extname(file.name);
+        // const fileName = Date.now() + ext;
+        const fileName = Date.now() + "-" + file.name + ext;
+        // const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+        const allowedType = [".png", ".jpg", ".jpeg", ".svg"];
+
+        if (!allowedType.includes(ext.toLowerCase()))
+          return res
+            .status(422)
+            .json({ msg: "Extensi file yang di ijinkan png, jpg, jpeg, svg" });
+        if (fileSize > 3000000)
+          return res.status(422).json({ msg: "Ukuran file maksimal 3 MB" });
+        file.mv(`./public/images/${fileName}`);
+        var image = fileName;
+      }
       const contact = await db.Contact.create({
         name: name,
         email: email,
@@ -67,16 +85,48 @@ module.exports = {
     } else {
       const contact = await db.Contact.findOne({ where: { id: id } });
       if (contact) {
-        if (req.file) {
-          // ada gk data image di database
-          if (contact.image !== null) {
-            const target = `public/images/${contact.image}`;
-            // hapus file image
-            fs.unlinkSync(target);
-          }
-          var image = req.file.filename;
+        // menggunakan multer
+        // if (req.file) {
+        //   // ada gk data image di database
+        //   if (contact.image !== null) {
+        //     const target = `public/images/${contact.image}`;
+        //     // hapus file image
+        //     fs.unlinkSync(target);
+        //   }
+        //   var image = req.file.filename;
+        // } else {
+        //   var image = contact.image;
+        // }
+        if (!errors.isEmpty()) {
+          return res
+            .status(422)
+            .send({ status: "error", errors: errors.array() });
         } else {
-          var image = contact.image;
+          // upload file
+          if (req.files === null) {
+            var image = contact.image;
+          } else {
+            if (contact.image !== null) {
+              const target = `public/images/${contact.image}`;
+              fs.unlinkSync(target);
+            }
+            const file = req.files.image;
+            const fileSize = file.size;
+            const ext = path.extname(file.name);
+            // const fileName = file.md5 + ext;
+            const fileName = Date.now() + "-" + file.name;
+
+            const allowedType = [".png", ".jpg", ".jpeg", ".svg"];
+
+            if (!allowedType.includes(ext.toLowerCase()))
+              return res.status(422).json({
+                msg: "Extensi file yang di ijinkan png, jpg, jpeg, svg",
+              });
+            if (fileSize > 3000000)
+              return res.status(422).json({ msg: "Ukuran file maksimal 3 MB" });
+            file.mv(`./public/images/${fileName}`);
+            var image = fileName;
+          }
         }
         contact.name = name;
         contact.email = email;
